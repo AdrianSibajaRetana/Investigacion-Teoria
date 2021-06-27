@@ -28,5 +28,6 @@ int main() {
     double porcentajeDeCruce = 0.50;
     vector<int> numeros = generarNumeros();
     algoritmoGenetico algoritmo(cantidadDeGeneraciones, tamañoDeGeneracion, porcentajeDeMutacion, porcentajeDeCruce, numeros);
+    algoritmo.comenzarAlgoritmo();
     return 0;
 }

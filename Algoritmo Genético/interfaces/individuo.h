@@ -15,7 +15,8 @@ class Individuo
 	public:
 		Individuo(vector<int> s_1, vector<int> s_2, vector<int> s_3);
 		void evaluar();
-		int puntaje;
+		void imprimir();
+		long long puntaje;
 
 };
 

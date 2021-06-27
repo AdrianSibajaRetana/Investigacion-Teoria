@@ -1,8 +1,9 @@
 #include "../interfaces/algoritmoGenetico.h"
-#include <fstream>
 #include <string>
 #include<algorithm>
-//quitar
+#include <time.h>
+
+//Quitar
 #include <iostream>
 
 Individuo generarIndividuo(vector<int> numeros)
@@ -31,6 +32,7 @@ Individuo generarIndividuo(vector<int> numeros)
 
 algoritmoGenetico::algoritmoGenetico(int generaciones, int tamaño, double porcentajeM, double porcentajeC, vector<int> numeros)
 {
+    srand (time(NULL));
     cantidadDeGeneraciones = generaciones;
     tamañoDeGeneracion = tamaño;
     porcentajeDeMutacion = porcentajeM;
@@ -51,16 +53,17 @@ void algoritmoGenetico::generarPoblacionInicial()
 
 void algoritmoGenetico::evaluarPoblacionActual()
 {
-    for (Individuo x : generacionActual)
+    for (Individuo& x : generacionActual)
         x.evaluar();
 
+
     sort(generacionActual.begin(), generacionActual.end(), [](const Individuo& lhs, const Individuo& rhs) {
-      return lhs.puntaje > rhs.puntaje;
+      return lhs.puntaje < rhs.puntaje;
     });
 }
 
 void algoritmoGenetico::comenzarAlgoritmo()
 {
     generarPoblacionInicial();
-    evaluarPoblacionActual();
+    evaluarPoblacionActual();    
 }
