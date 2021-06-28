@@ -24,23 +24,22 @@ vector<int> generarNumeros()
 int main() {
 
     // Propiedades del algoritmo genético
-    int cantidadDeGeneraciones = 1;
+    int cantidadDeGeneraciones = 100;
     int tamañoDeGeneracion = 10;
 
-    // Porcentajes de alteracion del proceso
-    double porcentajeDeMutacion = 0.05;
-    double porcentajeDeCruce = 0.50;
-    
+    // Porcentaje de probabilidad que tiene un gen de cambiar valor
+    double porcentajeDeMutacion = 0.01;
+
     //Formato de cambio de población
     //Se escogen el porcentaje de: 
     //                              mejores individuos
     //                              y peores individuos.
     // el resto de individuos nacerán a partir de cruces. 
-    double mejoresIndividuos = 0.4;
+    double mejoresIndividuos = 0.5;
     double peoresIndividuos = 0.1;
 
     vector<int> numeros = generarNumeros();
-    algoritmoGenetico algoritmo(cantidadDeGeneraciones, tamañoDeGeneracion, porcentajeDeMutacion, porcentajeDeCruce, numeros, mejoresIndividuos, peoresIndividuos);
+    algoritmoGenetico algoritmo(cantidadDeGeneraciones, tamañoDeGeneracion, porcentajeDeMutacion, numeros, mejoresIndividuos, peoresIndividuos);
     algoritmo.comenzarAlgoritmo();
     return 0;
 }

@@ -18,12 +18,20 @@ long long evaluarCuadrados(long long x_1, long long x_2)
 }
 
 
-Individuo::Individuo(vector<int> s_1, vector<int> s_2, vector<int> s_3)
+Individuo::Individuo(vector<int> s_1, vector<int> s_2, vector<int> s_3, vector<int> numeros_usados)
 {
     s1 = s_1;
     s2 = s_2; 
     s3 = s_3;
+    cadenaGenetica = numeros_usados;
     puntaje = 0;
+};
+
+Individuo::Individuo(vector<int> numeros_usados, vector<int> numeros)
+{
+    cadenaGenetica = numeros_usados;
+    puntaje = 0;
+    construirAPartirDeCadenaGenetica(numeros);
 };
 
 void Individuo::evaluar()
@@ -89,4 +97,25 @@ void Individuo::mutarVector(int vectorActual, double probabilidadDeMutar)
             }
         }
     }
+}
+
+void Individuo::construirAPartirDeCadenaGenetica(vector<int> numeros)
+{
+    int indiceActual = 0;
+    int numeroAAñadir;
+    for (int gen : cadenaGenetica)
+    {   
+        numeroAAñadir = numeros[indiceActual++];
+        switch(gen) {
+            case 1:
+                s1.push_back(numeroAAñadir);
+                break;
+            case 2:
+                s2.push_back(numeroAAñadir);
+                break;
+            case 3:
+                s3.push_back(numeroAAñadir);
+                break;            
+        }
+    }        
 }

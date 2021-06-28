@@ -23,7 +23,7 @@ class algoritmoGenetico
         void mutarIndividuos();
         
     public: 
-        algoritmoGenetico(int generaciones, int tamaño, double porcentajeM, double porcentajeC, vector<int> numeros, double elitismo, double peores);
+        algoritmoGenetico(int generaciones, int tamaño, double porcentajeM, vector<int> numeros, double elitismo, double peores);
         void comenzarAlgoritmo();
         Individuo obtenerMejorIndividuo();
 };

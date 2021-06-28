@@ -11,13 +11,15 @@ class Individuo
 		vector<int> s2;
 		vector<int> s3;
 		void mutarVector(int vectorActual, double probabilidadDeMutar);
-		
+		void construirAPartirDeCadenaGenetica(vector<int> numeros);
 	
 	public:
-		Individuo(vector<int> s_1, vector<int> s_2, vector<int> s_3);
+		Individuo(vector<int> s_1, vector<int> s_2, vector<int> s_3, vector<int> numeros_usados);
+		Individuo(vector<int> cadena_genetica, vector<int> numeros);
 		void evaluar();
 		void mutar(double probabilidadDeMutar);
 		long long puntaje;
+		vector<int> cadenaGenetica;
 
 };
 
