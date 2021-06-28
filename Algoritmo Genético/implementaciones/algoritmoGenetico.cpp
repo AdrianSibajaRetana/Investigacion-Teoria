@@ -30,7 +30,7 @@ Individuo generarIndividuo(vector<int> numeros)
     return individuoGenerado;  
 }
 
-algoritmoGenetico::algoritmoGenetico(int generaciones, int tamaño, double porcentajeM, double porcentajeC, vector<int> numeros)
+algoritmoGenetico::algoritmoGenetico(int generaciones, int tamaño, double porcentajeM, double porcentajeC, vector<int> numeros, double elitismo, double peores)
 {
     srand (time(NULL));
     cantidadDeGeneraciones = generaciones;
@@ -38,6 +38,8 @@ algoritmoGenetico::algoritmoGenetico(int generaciones, int tamaño, double porce
     porcentajeDeMutacion = porcentajeM;
     porcentajeDeCruce = porcentajeC;
     numerosLeidos = numeros;
+    mejoresIndividuos = elitismo;
+    peoresIndividuos = peores;
 }
 
 void algoritmoGenetico::generarPoblacionInicial()
@@ -56,14 +58,56 @@ void algoritmoGenetico::evaluarPoblacionActual()
     for (Individuo& x : generacionActual)
         x.evaluar();
 
-
     sort(generacionActual.begin(), generacionActual.end(), [](const Individuo& lhs, const Individuo& rhs) {
       return lhs.puntaje < rhs.puntaje;
     });
 }
 
+void algoritmoGenetico::seleccionarIndividuos()
+{
+    int cantidadPeoresIndividuos = tamañoDeGeneracion * peoresIndividuos;
+    for(int i = 0; i < cantidadPeoresIndividuos;)
+    {
+        Individuo individuoSeleccionado = generacionActual[i++];
+        generacionSiguiente.push_back(individuoSeleccionado);
+    }
+    int cantidadMejoresIndividuos = tamañoDeGeneracion * mejoresIndividuos;
+    for(int i = 0; i < cantidadMejoresIndividuos; i++)
+    {
+        int indice = generacionActual.size() - 1;
+        indice = indice - i; 
+        Individuo individuoSeleccionado = generacionActual[indice];
+        generacionSiguiente.push_back(individuoSeleccionado);
+    }
+    cruzarIndividuos();
+}
+
+void algoritmoGenetico::cruzarIndividuos()
+{
+    while(generacionSiguiente.size() < tamañoDeGeneracion)
+    {
+        
+    }
+}
+
+void algoritmoGenetico::mutarIndividuos()
+{
+    for (Individuo& x : generacionSiguiente)
+        x.mutar(porcentajeDeMutacion);
+}
+
+
 void algoritmoGenetico::comenzarAlgoritmo()
 {
+    int numeroDeGeneracion = 1;
     generarPoblacionInicial();
-    evaluarPoblacionActual();    
+    while(numeroDeGeneracion <= cantidadDeGeneraciones)
+    {
+        evaluarPoblacionActual();
+        seleccionarIndividuos();                 
+        mutarIndividuos();
+        generacionActual = generacionSiguiente;
+        generacionSiguiente.clear();
+        numeroDeGeneracion++;
+    }
 }

@@ -10,13 +10,20 @@ class algoritmoGenetico
         int tamañoDeGeneracion;
         double porcentajeDeMutacion;
         double porcentajeDeCruce;
+        double creadosPorCruces;
+        double mejoresIndividuos;
+        double peoresIndividuos;
         vector<int> numerosLeidos;
         vector<Individuo> generacionActual;
+        vector<Individuo> generacionSiguiente;
         void generarPoblacionInicial();
         void evaluarPoblacionActual();
-
+        void seleccionarIndividuos();
+        void cruzarIndividuos();
+        void mutarIndividuos();
+        
     public: 
-        algoritmoGenetico(int generaciones, int tamaño, double porcentajeM, double porcentajeC, vector<int> numeros);
+        algoritmoGenetico(int generaciones, int tamaño, double porcentajeM, double porcentajeC, vector<int> numeros, double elitismo, double peores);
         void comenzarAlgoritmo();
         Individuo obtenerMejorIndividuo();
 };

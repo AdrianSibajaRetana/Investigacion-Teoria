@@ -10,12 +10,13 @@ class Individuo
     	vector<int> s1;
 		vector<int> s2;
 		vector<int> s3;
+		void mutarVector(int vectorActual, double probabilidadDeMutar);
 		
 	
 	public:
 		Individuo(vector<int> s_1, vector<int> s_2, vector<int> s_3);
 		void evaluar();
-		void imprimir();
+		void mutar(double probabilidadDeMutar);
 		long long puntaje;
 
 };
