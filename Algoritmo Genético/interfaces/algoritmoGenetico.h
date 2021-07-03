@@ -6,16 +6,19 @@
 class algoritmoGenetico
 {
     private:
+        // propiedades principales (seteadas por main.cpp)
         int cantidadDeGeneraciones;        
         int tamañoDeGeneracion;
         double porcentajeDeMutacion;
-        double porcentajeDeCruce;
-        double creadosPorCruces;
         double mejoresIndividuos;
         double peoresIndividuos;
+        // números leídos del .txt
         vector<int> numerosLeidos;
+        // Almacena la generación Actual
         vector<Individuo> generacionActual;
+        // Almacena la siguiente Generación
         vector<Individuo> generacionSiguiente;
+        // Métodos para llevar a cabo las distintas partes del algoritmo
         void generarPoblacionInicial();
         void evaluarPoblacionActual();
         void seleccionarIndividuos();
@@ -24,8 +27,7 @@ class algoritmoGenetico
         
     public: 
         algoritmoGenetico(int generaciones, int tamaño, double porcentajeM, vector<int> numeros, double elitismo, double peores);
-        void comenzarAlgoritmo();
-        Individuo obtenerMejorIndividuo();
+        void comenzarAlgoritmo();        
 };
 
 #endif 
