@@ -14,13 +14,13 @@
 template<class T>
 class SimulatedAnnealing {
 private:
-    double const c_final_temperature = 0;
+    static constexpr double FINAL_TEMPERATURE = 0;
 
-    double m_temperature;
     uint32_t  m_iterations_per_temp;
+    uint32_t m_iterations;
+    double m_temperature;
 
     std::function<double (T)> m_solution_evaluator;
-    std::function<double (double)> m_reduce_temperature;
     std::function<std::vector<T> (T)> m_get_neighborhood;
 
     std::mt19937 m_generator;
@@ -29,7 +29,7 @@ private:
      * La condición de parada es que la temperatura actual sea menor o igual a 0 o que el algoritmo se atasque porque la solución actual tiene un vecindario vacío.
      */
     bool is_finished(std::vector<T> neighborhood) {
-        return m_temperature <= c_final_temperature || neighborhood.empty();
+        return m_temperature <= FINAL_TEMPERATURE || neighborhood.empty();
     }
 
     T get_random_neighbor(std::vector<T> neighborhood) {
@@ -44,18 +44,22 @@ private:
         return *it;
     }
 
+    double default_temperature_reducer(double temperature) {
+        return temperature / (m_iterations + 1.0);
+    }
+
 public:
     SimulatedAnnealing(
-            uint32_t iterations_per_temp,
             double initial_temperature,
-            std::function<double (T)> solution_evaluator,
-            std::function<double (double)> reduce_temperature,
-            std::function<std::vector<T> (T)> get_neighborhood)
+            uint32_t iterations_per_temp,
+            const std::function<double (T)>& solution_evaluator,
+            const std::function<std::vector<T> (T)>& get_neighborhood)
         :
+            m_iterations(0),
+            m_generator(std::random_device()()),
             m_temperature(initial_temperature),
             m_iterations_per_temp(iterations_per_temp),
             m_solution_evaluator(solution_evaluator),
-            m_reduce_temperature(reduce_temperature),
             m_get_neighborhood(get_neighborhood)
     {
     }
@@ -86,21 +90,20 @@ public:
                 }
                 // de lo contrario, se hace un cálculo probabilístico que depende de la temperatura y el costo para determinar si se acepta la solución o no.
                 else {
-                    std::uniform_int_distribution<> unif(0, 1);
-                    double probability = exp(-cost, m_temperature);
+                    std::uniform_real_distribution<> unif(0, 1);
+                    double probability = exp(-cost / m_temperature);
                     if (unif(m_generator) < probability) {
                         solution = new_solution;
                     }
-
                 }
             }
 
             // se reduce la temperatura actual.
-            m_temperature = m_reduce_temperature(m_temperature);
+            m_temperature = default_temperature_reducer(m_temperature);
+            ++m_iterations;
         }
 
         // solución encontrada.
         return solution;
     }
 };
-

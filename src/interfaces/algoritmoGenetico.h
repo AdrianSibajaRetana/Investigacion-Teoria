@@ -3,11 +3,11 @@
 #include "individuo.h"
 #include <tuple>
 
-class algoritmoGenetico
+class AlgoritmoGenetico
 {
     private:
         // propiedades principales (seteadas por main.cpp)
-        int cantidadDeGeneraciones;        
+        int cantidadDeGeneraciones;
         int tamañoDeGeneracion;
         double porcentajeDeMutacion;
         double mejoresIndividuos;
@@ -24,10 +24,10 @@ class algoritmoGenetico
         void seleccionarIndividuos();
         void cruzarIndividuos();
         void mutarIndividuos();
-        
-    public: 
-        algoritmoGenetico(int generaciones, int tamaño, double porcentajeM, vector<int> numeros, double elitismo, double peores);
-        void comenzarAlgoritmo();        
+
+    public:
+        AlgoritmoGenetico(int generaciones, int tamaño, double porcentajeM, vector<int> numeros, double elitismo, double peores);
+        void comenzarAlgoritmo();
 };
 
-#endif 
+#endif
