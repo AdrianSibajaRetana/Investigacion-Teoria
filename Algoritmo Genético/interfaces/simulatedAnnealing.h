@@ -4,6 +4,13 @@
 #include <random>
 #include <vector>
 
+/*
+ * Esta clase representa un solucionador de un problema por medio de la metaheurística conocida como Simulated Annealing (SA).
+ * El argumento de plantilla [T] representa el tipo de la solución del problema.
+ * El algoritmo se programó de forma genérica para que funcione para toda clase de problemas, siempre y cuando el usuario provea información correcta sobre el problema con el que está tratando.
+ * Debe indicar el estado inicial del problema, un evaluador de soluciones, y una función que para una posible solución encuentra su vecindario.
+ * Además es necesario proveer parámetros específicos para el algoritmo, como la cantidad de iteraciones antes de modificar la temperatura, la temperatura inicial y la función de cambio de la temperatura.
+ */
 template<class T>
 class SimulatedAnnealing {
 private:
@@ -18,7 +25,10 @@ private:
 
     std::mt19937 m_generator;
 
-    bool is_finished(T current_solution, std::vector<T> neighborhood) {
+    /*
+     * La condición de parada es que la temperatura actual sea menor o igual a 0 o que el algoritmo se atasque porque la solución actual tiene un vecindario vacío.
+     */
+    bool is_finished(std::vector<T> neighborhood) {
         return m_temperature <= c_final_temperature || neighborhood.empty();
     }
 
@@ -50,19 +60,31 @@ public:
     {
     }
 
+    /*
+     * Ejecuta el algoritmo de Simulated Annealing a partir de la solución inicial [initial_solution]. Retorna la solución encontrada.
+     */
     T run(T initial_solution) {
+        // inicializamos valores para el algoritmo
         auto solution = initial_solution;
         auto neighborhood = m_get_neighborhood(solution);
+
+        // el algoritmo continúa hasta no llegar a la condición de parada
         while (!is_finished(neighborhood)) {
+            // podemos repetir varias veces la misma temperatura antes de decrementar, dependiendo de cómo se configure el algoritmo.
             for (int i = 0; i < m_iterations_per_temp; ++i) {
+                // se calcula el vecindario para la solución actual.
                 neighborhood = m_get_neighborhood(solution);
 
+                // se obtiene una nueva solución aleatoria del vecindario.
                 auto new_solution = get_random_neighbor(neighborhood);
+                // se compara con la solución actual.
                 auto cost = m_solution_evaluator(solution) - m_solution_evaluator(new_solution);
 
+                // si la solución encontrada es mejor que la actual, entonces se acepta.
                 if (cost >= 0) {
                     solution = new_solution;
                 }
+                // de lo contrario, se hace un cálculo probabilístico que depende de la temperatura y el costo para determinar si se acepta la solución o no.
                 else {
                     std::uniform_int_distribution<> unif(0, 1);
                     double probability = exp(-cost, m_temperature);
@@ -73,9 +95,11 @@ public:
                 }
             }
 
+            // se reduce la temperatura actual.
             m_temperature = m_reduce_temperature(m_temperature);
         }
 
+        // solución encontrada.
         return solution;
     }
 };
