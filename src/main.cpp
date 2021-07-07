@@ -4,9 +4,10 @@
 #include <fstream>
 #include <string>
 #include <functional>
-#include "./interfaces/algoritmoGenetico.h"
-#include "./interfaces/simulatedAnnealing.h"
-#include "./interfaces/solutionSA.h"
+
+#include "algoritmoGenetico.h"
+#include "simulatedAnnealing.h"
+#include "solutionSA.h"
 
 vector<int> generarNumeros()
 {
@@ -47,8 +48,8 @@ void ejecutarAlgoritmoGenetico() {
 }
 
 void ejecutarSimulatedAnnealing() {
-    int iterations_per_temp = 100;
-    double initial_temperature = 5000;
+    int iterations_per_temp = 1000;
+    double initial_temperature = 10000;
 
     SimulatedAnnealing<SolutionSA> simulatedAnnealing(initial_temperature, iterations_per_temp, solution_evaluator, get_neighborhood);
     vector<int> numbers = generarNumeros();
@@ -84,7 +85,7 @@ int main(int argc, char** argv) {
         algoritmo = Algoritmos::simulatedAnnealing;
     }
     else {
-        return std::cerr << "Algoritmo " << argv[1] << "no reconocido.\n", 2;
+        return std::cerr << "Algoritmo " << argv[1] << " no reconocido.\n", 2;
     }
 
     if (algoritmo == Algoritmos::algoritmoGenetico) {
